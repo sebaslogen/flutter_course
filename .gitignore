@@ -7,3 +7,10 @@
 build/
 
 .flutter-plugins
+
+# IDEA/Android Studio ignores
+*.iml
+*.ipr
+*.iws
+/.idea/*
+/.idea/*/*
