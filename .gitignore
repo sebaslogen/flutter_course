@@ -12,5 +12,6 @@ build/
 *.iml
 *.ipr
 *.iws
-/.idea/*
-/.idea/*/*
+.idea/
+.idea/*/
+.idea/workspace.xml
