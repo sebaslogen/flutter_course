@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
           appBar: AppBar(
             title: Text("first stage"),
           ),
-          body: ProductManager("Food tester")),
+          body: ProductManager()),
+//          body: ProductManager(startingProduct: "Food tester")),
     );
   }
 }
