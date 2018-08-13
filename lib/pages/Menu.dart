@@ -15,20 +15,13 @@ class ProductsMenu extends StatelessWidget {
           ListTile(
             title: Text("Manage products"),
             onTap: () {
-              Navigator.pushReplacement<bool, bool>(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => ProductAdminPage()));
+              Navigator.pushReplacementNamed(context, "/admin");
             },
           ),
           ListTile(
             title: Text("Products page"),
             onTap: () {
-              Navigator.pushReplacement<bool, bool>(
-                context,
-                MaterialPageRoute(
-                    builder: (BuildContext context) => ProductsPage()),
-              );
+              Navigator.pushReplacementNamed(context, "/");
             },
           ),
         ],
