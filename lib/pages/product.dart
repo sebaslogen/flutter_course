@@ -29,13 +29,39 @@ class ProductPage extends StatelessWidget {
               Container(
                 padding: EdgeInsets.all(10.0),
                 child: RaisedButton(
-                  child: Text("Back"),
+                  child: Text("Delete"),
                   color: Theme.of(context).accentColor,
-                  onPressed: () => Navigator.pop(context, true),
+                  onPressed: () => _showDialogWarning(context),
                 ),
               )
             ],
           )),
     );
+  }
+
+  void _showDialogWarning(BuildContext context) {
+    showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Are you sure?"),
+            content: Text("This action can not be reverted"),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("DISCARD"),
+                onPressed: () {
+                  Navigator.pop(context); // Closes dialog
+                },
+              ),
+              FlatButton(
+                child: Text("CONTINUE"),
+                onPressed: () {
+                  Navigator.pop(context); // Closes dialog
+                  Navigator.pop(context, true); // Closes screen with true
+                },
+              ),
+            ],
+          );
+        });
   }
 }
