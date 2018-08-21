@@ -4,11 +4,9 @@ import 'package:flutter_course/pages/Menu.dart';
 import '../product_manager.dart';
 
 class ProductsPage extends StatelessWidget {
-  List<Map<String, String>> products;
-  final Function addProduct;
-  final Function deleteProduct;
+  List<Map<String, dynamic>> products;
 
-  ProductsPage(this.products, this.addProduct, this.deleteProduct);
+  ProductsPage(this.products);
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +15,6 @@ class ProductsPage extends StatelessWidget {
         appBar: AppBar(
           title: Text("Products list"),
         ),
-        body: ProductManager(products, addProduct, deleteProduct));
+        body: ProductManager(products));
   }
 }

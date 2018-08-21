@@ -19,9 +19,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Map<String, String>> _products = [];
+  List<Map<String, dynamic>> _products = [];
 
-  void _addProduct(Map<String, String> newProduct) {
+  void _addProduct(Map<String, dynamic> newProduct) {
     setState(() {
       _products.add(newProduct);
     });
@@ -40,9 +40,9 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.deepOrange, accentColor: Colors.deepPurple),
 //      home: AuthPage(), // This can not work while there is a route with root '/'
       routes: {
-        "/": (BuildContext context) =>
-            ProductsPage(_products, _addProduct, _deleteProduct),
-        "/admin": (BuildContext context) => ProductAdminPage(),
+        "/": (BuildContext context) => ProductsPage(_products),
+        "/admin": (BuildContext context) =>
+            ProductAdminPage(_addProduct, _deleteProduct),
       },
       onGenerateRoute: (RouteSettings settings) {
         // Only for paths not managed in routes
@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
       onUnknownRoute: (RouteSettings settings) {
         return MaterialPageRoute<bool>(
             builder: (BuildContext context) =>
-                ProductsPage(_products, _addProduct, _deleteProduct));
+                ProductsPage(_products));
       },
     );
   }
