@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_course/pages/products.dart';
 
 class AuthPage extends StatelessWidget {
   @override
@@ -8,12 +7,35 @@ class AuthPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Login"),
       ),
-      body: Center(
-        child: RaisedButton(
-          child: Text("LOGIN"),
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, "/");
-          },
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(
+          child: ListView(children: <Widget>[
+            TextField(
+              decoration: InputDecoration(labelText: "Email"),
+              keyboardType: TextInputType.emailAddress,
+              onChanged: (String value) {
+//              setState(() {
+//                descriptionValue = value;
+//              });
+              },
+            ),
+            TextField(
+              decoration: InputDecoration(labelText: "Password"),
+              obscureText: true,
+              onChanged: (String value) {
+//              setState(() {
+//                priceValue = double.parse(value);
+//              });
+              },
+            ),
+            RaisedButton(
+              child: Text("LOGIN"),
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, "/products");
+              },
+            ),
+          ]),
         ),
       ),
     );

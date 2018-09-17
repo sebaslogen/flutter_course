@@ -29,7 +29,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                 titleValue = value;
               });
             },
-          ), TextField(
+          ),
+          TextField(
             decoration: InputDecoration(labelText: "Product decription"),
             maxLines: null,
             onChanged: (String value) {
@@ -37,7 +38,8 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                 descriptionValue = value;
               });
             },
-          ), TextField(
+          ),
+          TextField(
             decoration: InputDecoration(labelText: "Product price"),
             keyboardType: TextInputType.number,
             onChanged: (String value) {
@@ -46,15 +48,24 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               });
             },
           ),
-          RaisedButton(child: Text("Save"), onPressed: () {
-            final Map<String, dynamic> product = <String, dynamic>{
-              "title": titleValue,
-              "description": descriptionValue,
-              "price": priceValue,
-              "image": "assets/food.jpg"
-            };
-            widget.addProduct(product);
-          },),
+          SizedBox(
+            height: 10.0,
+          ),
+          RaisedButton(
+            child: Text("Save"),
+            color: Theme.of(context).accentColor,
+            textColor: Colors.white,
+            onPressed: () {
+              final Map<String, dynamic> product = <String, dynamic>{
+                "title": titleValue,
+                "description": descriptionValue,
+                "price": priceValue,
+                "image": "assets/food.jpg"
+              };
+              widget.addProduct(product);
+              Navigator.pushReplacementNamed(context, "/products");
+            },
+          ),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course/pages/auth.dart';
 import 'package:flutter_course/pages/product.dart';
 import 'package:flutter_course/pages/product_admin.dart';
 import 'package:flutter_course/pages/products.dart';
@@ -40,7 +41,8 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.deepOrange, accentColor: Colors.deepPurple),
 //      home: AuthPage(), // This can not work while there is a route with root '/'
       routes: {
-        "/": (BuildContext context) => ProductsPage(_products),
+        "/": (BuildContext context) => AuthPage(),
+        "/products": (BuildContext context) => ProductsPage(_products),
         "/admin": (BuildContext context) =>
             ProductAdminPage(_addProduct, _deleteProduct),
       },
