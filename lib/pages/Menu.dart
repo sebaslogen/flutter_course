@@ -21,7 +21,7 @@ class ProductsMenu extends StatelessWidget {
           ListTile(
             title: Text("Products page"),
             onTap: () {
-              Navigator.pushReplacementNamed(context, "/");
+              Navigator.pushReplacementNamed(context, "/products");
             },
           ),
         ],
