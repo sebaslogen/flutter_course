@@ -35,12 +35,15 @@ class Products extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  products[index]["title"],
-                  style: TextStyle(
-                      fontSize: 26.0,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Oswald"),
+                Flexible(
+                  child: Text(
+                    products[index]["title"],
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 26.0,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Oswald"),
+                  ),
                 ),
                 SizedBox(
                   width: 8.0,
@@ -53,6 +56,7 @@ class Products extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5.0)),
                     child: Text(
                       '\$' + products[index]["price"].toString(),
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: Colors.white),
                     )),
               ],
