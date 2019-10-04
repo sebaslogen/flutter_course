@@ -45,9 +45,7 @@ class Products extends StatelessWidget {
                         fontFamily: "Oswald"),
                   ),
                 ),
-                SizedBox(
-                  width: 8.0,
-                ),
+                SizedBox(width: 8.0),
                 Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),

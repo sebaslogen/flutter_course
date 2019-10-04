@@ -27,46 +27,59 @@ class _AuthPageState extends State<AuthPage> {
                     Colors.black.withOpacity(0.3), BlendMode.dstATop))),
         padding: const EdgeInsets.all(10.0),
         child: Center(
-          child: ListView(children: <Widget>[
-            TextField(
-              decoration: InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
-              onChanged: (String value) {
-                setState(() {
-                  _emailValue = value;
-                });
-              },
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
-              onChanged: (String value) {
-                setState(() {
-                  _passwordValue = value;
-                });
-              },
-            ),
-            SwitchListTile(
-              value: _acceptTerms,
-              onChanged: (bool value) {
-                setState(() {
-                  _acceptTerms = value;
-                });
-              },
-              title: Text('Accept terms'),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            RaisedButton(
-              child: Text('LOGIN'),
-              color: Theme.of(context).primaryColor,
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, '/products');
-              },
-            ),
-          ]),
+          child: SingleChildScrollView(
+            child: Column(children: <Widget>[
+              TextField(
+                decoration: InputDecoration(
+                    labelText: 'Email', filled: true, fillColor: Colors.white),
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (String value) {
+                  setState(() {
+                    _emailValue = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10.0),
+              TextField(
+                decoration: InputDecoration(
+                    labelText: 'Password',
+                    filled: true,
+                    fillColor: Colors.white),
+                obscureText: true,
+                onChanged: (String value) {
+                  setState(() {
+                    _passwordValue = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10.0),
+              DecoratedBox(
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [Colors.white10, Colors.orangeAccent, Colors.orangeAccent, Colors.white10])),
+                child: SwitchListTile(
+                  value: _acceptTerms,
+                  onChanged: (bool value) {
+                    setState(() {
+                      _acceptTerms = value;
+                    });
+                  },
+                  title: Text('Accept terms'),
+                ),
+              ),
+              SizedBox(height: 10.0),
+              RaisedButton(
+                child: Text('LOGIN'),
+                color: Theme.of(context).primaryColor,
+                textColor: Colors.white,
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/products');
+                },
+              ),
+            ]),
+          ),
         ),
       ),
     );
