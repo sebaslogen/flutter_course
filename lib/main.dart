@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_course/transaction.dart';
+import 'package:intl/intl.dart';
 //import 'package:flutter/rendering.dart'; // Required for debug paint
 
 void main() {
@@ -85,7 +86,7 @@ class MyHomePage extends StatelessWidget {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top:4, bottom: 10, left: 10, right: 10),
-                        child: Text(tx.date.toIso8601String(),
+                        child: Text(DateFormat.yMMMEd().format(tx.date),
                             style:
                                 TextStyle(fontSize: 14, color: Colors.grey)),
                       )
