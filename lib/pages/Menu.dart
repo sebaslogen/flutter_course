@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_course/pages/product_admin.dart';
-import 'package:flutter_course/pages/products.dart';
 
 class ProductsMenu extends StatelessWidget {
   @override
@@ -10,18 +8,18 @@ class ProductsMenu extends StatelessWidget {
         children: <Widget>[
           AppBar(
             automaticallyImplyLeading: false,
-            title: Text("Choose"),
+            title: const Text('Choose'),
           ),
           ListTile(
-            title: Text("Manage products"),
+            title: const Text('Manage products'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, "/admin");
+              Navigator.pushReplacementNamed(context, '/admin');
             },
           ),
           ListTile(
-            title: Text("Products page"),
+            title: const Text('Products page'),
             onTap: () {
-              Navigator.pushReplacementNamed(context, "/products");
+              Navigator.pushReplacementNamed(context, '/products');
             },
           ),
         ],
