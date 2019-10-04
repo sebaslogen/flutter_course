@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course/pages/auth.dart';
-import 'package:flutter_course/pages/product_page.dart';
 import 'package:flutter_course/pages/product_admin.dart';
+import 'package:flutter_course/pages/product_page.dart';
 import 'package:flutter_course/pages/products_page.dart';
 //import 'package:flutter/rendering.dart'; // Required for debug paint
 
@@ -63,8 +63,7 @@ class _MyAppState extends State<MyApp> {
       },
       onUnknownRoute: (RouteSettings settings) {
         return MaterialPageRoute<bool>(
-            builder: (BuildContext context) =>
-                ProductsPage(_products));
+            builder: (BuildContext context) => ProductsPage(_products));
       },
     );
   }
