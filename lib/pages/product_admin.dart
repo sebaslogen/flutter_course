@@ -4,10 +4,10 @@ import 'package:flutter_course/pages/product_create.dart';
 import 'package:flutter_course/pages/product_list.dart';
 
 class ProductAdminPage extends StatelessWidget {
+  const ProductAdminPage(this.addProduct, this.deleteProduct);
+
   final Function addProduct;
   final Function deleteProduct;
-
-  ProductAdminPage(this.addProduct, this.deleteProduct);
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +16,16 @@ class ProductAdminPage extends StatelessWidget {
       child: Scaffold(
         drawer: ProductsMenu(),
         appBar: AppBar(
-          title: Text("Manage products"),
+          title: const Text('Manage products'),
           bottom: TabBar(
             tabs: <Widget>[
               Tab(
                 icon: Icon(Icons.create),
-                text: "Create Products",
+                text: 'Create Products',
               ),
               Tab(
                 icon: Icon(Icons.list),
-                text: "My Products",
+                text: 'My Products',
               ),
             ],
           ),
