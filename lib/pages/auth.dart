@@ -16,14 +16,20 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text('Login'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/background.jpg'),
+                fit: BoxFit.cover,
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.3), BlendMode.dstATop))),
+        padding: const EdgeInsets.all(10.0),
         child: Center(
           child: ListView(children: <Widget>[
             TextField(
-              decoration: InputDecoration(labelText: "Email"),
+              decoration: InputDecoration(labelText: 'Email'),
               keyboardType: TextInputType.emailAddress,
               onChanged: (String value) {
                 setState(() {
@@ -32,7 +38,7 @@ class _AuthPageState extends State<AuthPage> {
               },
             ),
             TextField(
-              decoration: InputDecoration(labelText: "Password"),
+              decoration: InputDecoration(labelText: 'Password'),
               obscureText: true,
               onChanged: (String value) {
                 setState(() {
@@ -47,17 +53,17 @@ class _AuthPageState extends State<AuthPage> {
                   _acceptTerms = value;
                 });
               },
-              title: Text("Accept terms"),
+              title: Text('Accept terms'),
             ),
             SizedBox(
               height: 10.0,
             ),
             RaisedButton(
-              child: Text("LOGIN"),
+              child: Text('LOGIN'),
               color: Theme.of(context).primaryColor,
               textColor: Colors.white,
               onPressed: () {
-                Navigator.pushReplacementNamed(context, "/products");
+                Navigator.pushReplacementNamed(context, '/products');
               },
             ),
           ]),
