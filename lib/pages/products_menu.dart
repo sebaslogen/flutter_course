@@ -11,13 +11,6 @@ class ProductsMenu extends StatelessWidget {
             title: const Text('Choose'),
           ),
           ListTile(
-            leading: Icon(Icons.edit),
-            title: const Text('Manage products'),
-            onTap: () {
-              Navigator.pushReplacementNamed(context, '/admin');
-            },
-          ),
-          ListTile(
             leading: Icon(Icons.shop_two),
             title: const Text('All products'),
             onTap: () {
