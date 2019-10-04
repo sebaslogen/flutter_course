@@ -62,22 +62,24 @@ class Products extends StatelessWidget {
           ),
           DecoratedBox(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
-                child: Text("Santa Bárbara, Toledo"),
-              )),
+                  border: Border.all(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(4.0)),
+              child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
+                  child: Text('Santa Bárbara, Toledo'))),
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlatButton(
-                child: Text("Details"),
-                onPressed: () => Navigator.pushNamed<bool>(
-                    context, "/product/" + index.toString()),
-              )
+              IconButton(
+                  icon: const Icon(Icons.info),
+                  color: Theme.of(context).accentColor,
+                  onPressed: () => Navigator.pushNamed<bool>(
+                      context, '/product/' + index.toString())),
+              IconButton(
+                  icon: const Icon(Icons.favorite_border),
+                  color: Colors.red,
+                  onPressed: () => Navigator.pushNamed<bool>(
+                      context, '/product/' + index.toString()))
             ],
           )
         ],

@@ -14,6 +14,9 @@ class ProductsPage extends StatelessWidget {
         drawer: ProductsAdminMenu(),
         appBar: AppBar(
           title: const Text('Products list'),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.favorite), onPressed: () {})
+          ],
         ),
         body: ProductManager(products));
   }
