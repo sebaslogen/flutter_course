@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Products extends StatelessWidget {
-  final List<Map<String, dynamic>> products;
+  const Products(this.products);
 
-  Products(this.products);
+  final List<Map<String, dynamic>> products;
 
   @override
   Widget build(BuildContext context) {
@@ -12,14 +12,14 @@ class Products extends StatelessWidget {
 
   Widget _buildProductsList() {
     Widget productCards;
-    if (products.length > 0) {
+    if (products.isNotEmpty) {
       productCards = ListView.builder(
         itemBuilder: _buildProductItem,
         itemCount: products.length,
       );
     } else {
       productCards = Center(
-        child: Text("No products found, please add some"),
+        child: const Text('No products found, please add some'),
       );
     }
     return productCards;
@@ -29,7 +29,7 @@ class Products extends StatelessWidget {
     return Card(
       child: Column(
         children: <Widget>[
-          Image.asset(products[index]["image"]),
+          Image.asset(products[index]['image']),
           Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Row(
@@ -37,23 +37,23 @@ class Products extends StatelessWidget {
               children: <Widget>[
                 Flexible(
                   child: Text(
-                    products[index]["title"],
+                    products[index]['title'],
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 26.0,
                         fontWeight: FontWeight.bold,
-                        fontFamily: "Oswald"),
+                        fontFamily: 'Oswald'),
                   ),
                 ),
-                SizedBox(width: 8.0),
+                const SizedBox(width: 8.0),
                 Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 6.0, vertical: 2.5),
                     decoration: BoxDecoration(
                         color: Theme.of(context).accentColor,
                         borderRadius: BorderRadius.circular(5.0)),
                     child: Text(
-                      '\$' + products[index]["price"].toString(),
+                      '\$' + products[index]['price'].toString(),
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(color: Colors.white),
                     )),
@@ -62,10 +62,12 @@ class Products extends StatelessWidget {
           ),
           DecoratedBox(
               decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(4.0),),
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(4.0),
+              ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6.0, vertical: 2.5),
                 child: Text("Santa Bárbara, Toledo"),
               )),
           ButtonBar(

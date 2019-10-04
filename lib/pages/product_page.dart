@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class ProductPage extends StatelessWidget {
-  final String title;
-  final String imageUrl;
+  const ProductPage(this.title, this.imageUrl);
 
-  ProductPage(this.title, this.imageUrl);
+  final String title;
+
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {

@@ -16,12 +16,12 @@ class _AuthPageState extends State<AuthPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text('Login'),
       ),
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('assets/background.jpg'),
+                image: const AssetImage('assets/background.jpg'),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                     Colors.black.withOpacity(0.3), BlendMode.dstATop))),
@@ -39,7 +39,7 @@ class _AuthPageState extends State<AuthPage> {
                   });
                 },
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               TextField(
                 decoration: InputDecoration(
                     labelText: 'Password',
@@ -52,7 +52,7 @@ class _AuthPageState extends State<AuthPage> {
                   });
                 },
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               DecoratedBox(
                 decoration: BoxDecoration(
                     gradient: LinearGradient(
@@ -66,12 +66,12 @@ class _AuthPageState extends State<AuthPage> {
                       _acceptTerms = value;
                     });
                   },
-                  title: Text('Accept terms'),
+                  title: const Text('Accept terms'),
                 ),
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               RaisedButton(
-                child: Text('LOGIN'),
+                child: const Text('LOGIN'),
                 color: Theme.of(context).primaryColor,
                 textColor: Colors.white,
                 onPressed: () {

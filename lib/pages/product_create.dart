@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ProductCreatePage extends StatefulWidget {
-  final Function addProduct;
+  const ProductCreatePage(this.addProduct);
 
-  ProductCreatePage(this.addProduct);
+  final Function addProduct;
 
   @override
   State createState() {
@@ -19,11 +19,11 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(10.0),
+      margin: const EdgeInsets.all(10.0),
       child: ListView(
         children: <Widget>[
           TextField(
-            decoration: InputDecoration(labelText: "Product title"),
+            decoration: InputDecoration(labelText: 'Product title'),
             onChanged: (String value) {
               setState(() {
                 _titleValue = value;
@@ -31,7 +31,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
             },
           ),
           TextField(
-            decoration: InputDecoration(labelText: "Product decription"),
+            decoration: InputDecoration(labelText: 'Product decription'),
             maxLines: null,
             onChanged: (String value) {
               setState(() {
@@ -40,7 +40,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
             },
           ),
           TextField(
-            decoration: InputDecoration(labelText: "Product price"),
+            decoration: InputDecoration(labelText: 'Product price'),
             keyboardType: TextInputType.number,
             onChanged: (String value) {
               setState(() {
@@ -48,22 +48,20 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               });
             },
           ),
-          SizedBox(
-            height: 10.0,
-          ),
+          const SizedBox(height: 10.0),
           RaisedButton(
-            child: Text("Save"),
+            child: const Text('Save'),
             color: Theme.of(context).accentColor,
             textColor: Colors.white,
             onPressed: () {
               final Map<String, dynamic> product = <String, dynamic>{
-                "title": _titleValue,
-                "description": _descriptionValue,
-                "price": _priceValue,
-                "image": "assets/food.jpg"
+                'title': _titleValue,
+                'description': _descriptionValue,
+                'price': _priceValue,
+                'image': 'assets/food.jpg'
               };
               widget.addProduct(product);
-              Navigator.pushReplacementNamed(context, "/products");
+              Navigator.pushReplacementNamed(context, '/products');
             },
           ),
         ],
