@@ -17,7 +17,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Expenses planner',
-      theme: ThemeData(primarySwatch: Colors.purple, accentColor: Colors.amber),
+      theme: ThemeData(
+          primarySwatch: Colors.purple,
+          accentColor: Colors.amber,
+          fontFamily: 'Quicksand',
+          textTheme: ThemeData.light().textTheme.copyWith(
+              title: TextStyle(
+                  fontFamily: 'OpenSans',
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold)),
+          appBarTheme: AppBarTheme(
+              textTheme: ThemeData.light().textTheme.copyWith(
+                  title: TextStyle(
+                      fontFamily: 'OpenSans',
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold)))),
       home: MyHomePage(),
     );
   }
@@ -30,16 +44,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-        id: 't1',
-        title: 'New shiny shoes',
-        amount: 69.99,
-        date: DateTime.now()),
-    Transaction(
-        id: 't2',
-        title: 'Weekly groceries',
-        amount: 16.53,
-        date: DateTime.now())
+//    Transaction(
+//        id: 't1',
+//        title: 'New shiny shoes',
+//        amount: 69.99,
+//        date: DateTime.now()),
+//    Transaction(
+//        id: 't2',
+//        title: 'Weekly groceries',
+//        amount: 16.53,
+//        date: DateTime.now())
   ];
 
   void _addNewTransaction(String title, double amount) {
@@ -54,9 +68,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _startAddNewTransaction(BuildContext ctx) {
-    showModalBottomSheet<void>(context: ctx, builder: (_) {
-      return NewTransaction(_addNewTransaction);
-    });
+    showModalBottomSheet<void>(
+        context: ctx,
+        builder: (_) {
+          return NewTransaction(_addNewTransaction);
+        });
   }
 
   @override
