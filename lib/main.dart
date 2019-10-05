@@ -34,6 +34,8 @@ class MyHomePage extends StatelessWidget {
         amount: 16.53,
         date: DateTime.now())
   ];
+  final titleController = TextEditingController();
+  final amountController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,9 +45,10 @@ class MyHomePage extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            // Chart //
             Expanded(
               child: Card(
                 color: Colors.green,
@@ -54,8 +57,35 @@ class MyHomePage extends StatelessWidget {
                     child: Text('Chart', textAlign: TextAlign.center)),
               ),
             ),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Title'),
+                      controller: titleController
+                    ),
+                    TextField(
+                      decoration: InputDecoration(labelText: 'Amount'),
+                        controller: amountController
+                    ),
+                    FlatButton(
+                      child: const Text('Add transation'),
+                      textColor: Colors.purple,
+                      onPressed: () {
+                        print(titleController.text);
+                        print(amountController.text);
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+            // Transactions //
             Column(
-                children: transactions.map((tx) {
+                children: transactions.map((Transaction tx) {
               return Card(
                   child: Row(
                 children: <Widget>[
@@ -77,7 +107,8 @@ class MyHomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(top:10, bottom: 4, left: 10, right: 10),
+                        padding: const EdgeInsets.only(
+                            top: 10, bottom: 4, left: 10, right: 10),
                         child: Text(
                           tx.title,
                           style: TextStyle(
@@ -85,10 +116,10 @@ class MyHomePage extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top:4, bottom: 10, left: 10, right: 10),
+                        padding: const EdgeInsets.only(
+                            top: 4, bottom: 10, left: 10, right: 10),
                         child: Text(DateFormat.yMMMEd().format(tx.date),
-                            style:
-                                TextStyle(fontSize: 14, color: Colors.grey)),
+                            style: TextStyle(fontSize: 14, color: Colors.grey)),
                       )
                     ],
                   )
