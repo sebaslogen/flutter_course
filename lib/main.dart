@@ -26,19 +26,17 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Expenses planner'),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             // Chart //
-            Expanded(
-              child: Card(
-                color: Colors.green,
-                elevation: 5,
-                child: const Center(
-                    child: Text('Chart', textAlign: TextAlign.center)),
-              ),
+            Card(
+              color: Colors.green,
+              elevation: 5,
+              child: const Center(
+                  child: Text('Chart', textAlign: TextAlign.center)),
             ),
             UserTransactions()
           ],
