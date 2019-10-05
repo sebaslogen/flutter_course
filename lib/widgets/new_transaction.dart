@@ -35,7 +35,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 controller: amountController),
             FlatButton(
                 child: const Text('Add transation'),
-                textColor: Colors.purple,
+                textColor: Theme.of(context).accentColor,
                 onPressed: _submitData)
           ],
         ),
