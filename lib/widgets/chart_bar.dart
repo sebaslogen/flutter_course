@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ChartBar extends StatelessWidget {
-  const ChartBar(this.label, this.spendingAmount, this.spendingPercentageOfTotal);
+  const ChartBar(
+      this.label, this.spendingAmount, this.spendingPercentageOfTotal);
 
   final String label;
   final double spendingAmount;
@@ -12,7 +13,11 @@ class ChartBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        FittedBox(child: Text('\$${spendingAmount.toStringAsFixed(0)}')), // FittedBox makes the text shrink
+        Container(
+            height: 20,
+            child: FittedBox(
+                child: Text('\$${spendingAmount.toStringAsFixed(0)}'))),
+        // FittedBox makes the text shrink
         const SizedBox(height: 4),
         Container(
             height: 60,

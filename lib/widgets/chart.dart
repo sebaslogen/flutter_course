@@ -35,15 +35,22 @@ class Chart extends StatelessWidget {
     return Card(
         elevation: 6,
         margin: const EdgeInsets.all(20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: groupedTransactionsValues.map((item) {
-            return Flexible(
-              fit: FlexFit.tight,
-              child: ChartBar(item['day'], item['amount'],
-                  totalSpending == 0.0 ? 0.0 : (item['amount'] as double) / totalSpending),
-            );
-          }).toList(),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: groupedTransactionsValues.map((item) {
+              return Flexible(
+                fit: FlexFit.tight,
+                child: ChartBar(
+                    item['day'],
+                    item['amount'],
+                    totalSpending == 0.0
+                        ? 0.0
+                        : (item['amount'] as double) / totalSpending),
+              );
+            }).toList(),
+          ),
         ));
   }
 }
