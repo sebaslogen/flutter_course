@@ -104,17 +104,12 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             // Chart //
             Container(
               height: 200,
-              child: Card(
-                color: Theme.of(context).accentColor,
-                elevation: 5,
-                child: Chart(_userTransactions),
-              ),
+              child: Chart(_userTransactions),
             ),
             TransactionsList(_userTransactions, _deleteTransaction)
           ],
