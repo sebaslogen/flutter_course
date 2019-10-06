@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_course/widgets/new_transaction.dart';
 
 import 'models/transaction.dart';
+import 'widgets/chart.dart';
 import 'widgets/transactions_list.dart';
 //import 'package:flutter/rendering.dart'; // Required for debug paint
 
@@ -44,16 +45,16 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-//    Transaction(
-//        id: 't1',
-//        title: 'New shiny shoes',
-//        amount: 69.99,
-//        date: DateTime.now()),
-//    Transaction(
-//        id: 't2',
-//        title: 'Weekly groceries',
-//        amount: 16.53,
-//        date: DateTime.now())
+    Transaction(
+        id: 't1',
+        title: 'New shiny shoes',
+        amount: 69.99,
+        date: DateTime.now().subtract(Duration(days: 2))),
+    Transaction(
+        id: 't2',
+        title: 'Weekly groceries',
+        amount: 16.53,
+        date: DateTime.now().subtract(Duration(days: 1)))
   ];
 
   void _addNewTransaction(String title, double amount) {
@@ -101,8 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Card(
               color: Theme.of(context).accentColor,
               elevation: 5,
-              child: const Center(
-                  child: Text('Chart', textAlign: TextAlign.center)),
+              child: Chart(_userTransactions),
             ),
             TransactionsList(_userTransactions)
           ],
