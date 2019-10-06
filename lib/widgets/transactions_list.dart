@@ -3,9 +3,10 @@ import 'package:flutter_course/models/transaction.dart';
 import 'package:intl/intl.dart';
 
 class TransactionsList extends StatelessWidget {
-  const TransactionsList(this.transactions);
+  const TransactionsList(this.transactions, this.deleteTransaction);
 
   final List<Transaction> transactions;
+  final Function deleteTransaction;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,8 @@ class TransactionsList extends StatelessWidget {
               itemBuilder: (context, index) {
                 final tx = transactions[index];
                 return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
                   elevation: 2,
                   child: ListTile(
                     leading: CircleAvatar(
@@ -52,6 +54,11 @@ class TransactionsList extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 14,
                             color: Theme.of(context).primaryColorLight)),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      color: Theme.of(context).errorColor,
+                      onPressed: () => deleteTransaction(tx.id),
+                    ),
                   ),
                 );
               },
