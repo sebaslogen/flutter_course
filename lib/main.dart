@@ -54,7 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
         id: 't2',
         title: 'Weekly groceries',
         amount: 16.53,
-        date: DateTime.now().subtract(Duration(days: 1)))
+        date: DateTime.now().subtract(Duration(days: 1))),
+    Transaction(
+        id: 't3',
+        title: 'Loooong',
+        amount: 69666666.99,
+        date: DateTime.now()),
   ];
 
   void _addNewTransaction(String title, double amount) {
@@ -99,10 +104,13 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             // Chart //
-            Card(
-              color: Theme.of(context).accentColor,
-              elevation: 5,
-              child: Chart(_userTransactions),
+            Container(
+              height: 200,
+              child: Card(
+                color: Theme.of(context).accentColor,
+                elevation: 5,
+                child: Chart(_userTransactions),
+              ),
             ),
             TransactionsList(_userTransactions)
           ],
