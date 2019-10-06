@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_course/models/transaction.dart';
 import 'package:flutter_course/widgets/chart_bar.dart';
@@ -35,9 +36,13 @@ class Chart extends StatelessWidget {
         elevation: 6,
         margin: const EdgeInsets.all(20),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: groupedTransactionsValues.map((item) {
-            return ChartBar(item['day'], item['amount'],
-                totalSpending == 0.0 ? 0.0 : (item['amount'] as double) / totalSpending);
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(item['day'], item['amount'],
+                  totalSpending == 0.0 ? 0.0 : (item['amount'] as double) / totalSpending),
+            );
           }).toList(),
         ));
   }
