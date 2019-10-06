@@ -29,47 +29,31 @@ class TransactionsList extends StatelessWidget {
               itemBuilder: (context, index) {
                 final tx = transactions[index];
                 return Card(
-                    child: Row(
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        '\$${tx.amount.toStringAsFixed(2)}',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Theme.of(context).primaryColor),
-                      ),
-                      padding: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 14, horizontal: 16),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColorDark,
-                              width: 2)),
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 10, bottom: 4, left: 10, right: 10),
-                          child: Text(
-                            tx.title,
-                            style: Theme.of(context).textTheme.title,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 4, bottom: 10, left: 10, right: 10),
-                          child: Text(DateFormat.yMMMEd().format(tx.date),
+                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                  elevation: 2,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                        radius: 30,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: FittedBox(
+                            child: Text(
+                              '\$${tx.amount.toStringAsFixed(2)}',
                               style: TextStyle(
-                                  fontSize: 14,
-                                  color: Theme.of(context).primaryColorLight)),
-                        )
-                      ],
-                    )
-                  ],
-                ));
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                            ),
+                          ),
+                        )),
+                    title: Text(
+                      tx.title,
+                      style: Theme.of(context).textTheme.title,
+                    ),
+                    subtitle: Text(DateFormat.yMMMEd().format(tx.date),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Theme.of(context).primaryColorLight)),
+                  ),
+                );
               },
               itemCount: transactions.length),
     );
