@@ -18,7 +18,7 @@ class ChartBar extends StatelessWidget {
               FittedBox(child: Text('\$${spendingAmount.toStringAsFixed(0)}')),
         ),
         // FittedBox makes the text shrink
-//        const SizedBox(height: 4),
+        const SizedBox(height: 4),
         Expanded(
           flex: 3,
           child: Container(
@@ -43,7 +43,7 @@ class ChartBar extends StatelessWidget {
                 ],
               )),
         ),
-//        const SizedBox(height: 4),
+        const SizedBox(height: 4),
         Expanded(child: Text(label))
       ],
     );
