@@ -106,8 +106,8 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            // Chart //
             Container(
+              // We use a fix height so the chart columns can distribute their sizes with flexible
               height: 200,
               child: Chart(_userTransactions),
             ),
