@@ -21,7 +21,7 @@ class _NewTransactionState extends State<NewTransaction> {
     if (enteredTitle.isEmpty || enteredAmount.isEmpty) {
       return;
     }
-    widget.addNewTransaction(enteredTitle, double.parse(enteredAmount));
+    widget.addNewTransaction(enteredTitle, double.parse(enteredAmount), _selectedDate);
 
     Navigator.of(context).pop();
   }
