@@ -98,12 +98,12 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       ],
     );
-    final availableContentHeight = MediaQuery.of(context).size.height -
-        MediaQuery.of(context).padding.top -
-        MediaQuery.of(context).padding.bottom -
+    final mediaQuery = MediaQuery.of(context);
+    final availableContentHeight = mediaQuery.size.height -
+        mediaQuery.padding.top -
+        mediaQuery.padding.bottom -
         appBar.preferredSize.height;
-    final isLandscape =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
     final txListContainer = Container(
         height: availableContentHeight * 0.7,
@@ -141,13 +141,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Chart(_userTransactions),
               ),
             if (!isLandscape) txListContainer,
-            if (isLandscape) _showChar
-                ? Container(
-                    // We use a fix height so the chart columns can distribute their sizes with flexible
-                    height: availableContentHeight * 0.7,
-                    child: Chart(_userTransactions),
-                  )
-                : txListContainer
+            if (isLandscape)
+              _showChar
+                  ? Container(
+                      // We use a fix height so the chart columns can distribute their sizes with flexible
+                      height: availableContentHeight * 0.7,
+                      child: Chart(_userTransactions),
+                    )
+                  : txListContainer
           ],
         ),
       ),
