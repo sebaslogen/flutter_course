@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_course/widgets/new_transaction.dart';
 
@@ -50,12 +52,12 @@ class _MyHomePageState extends State<MyHomePage> {
         id: 't1',
         title: 'New shiny shoes',
         amount: 69.99,
-        date: DateTime.now().subtract(Duration(days: 2))),
+        date: DateTime.now().subtract(const Duration(days: 2))),
     Transaction(
         id: 't2',
         title: 'Weekly groceries',
         amount: 16.53,
-        date: DateTime.now().subtract(Duration(days: 1))),
+        date: DateTime.now().subtract(const Duration(days: 1))),
     Transaction(
         id: 't3', title: 'Loooong', amount: 123.99, date: DateTime.now()),
   ];
@@ -107,10 +109,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: appBar,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startAddNewTransaction(context),
-      ),
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () => _startAddNewTransaction(context),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -120,7 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Text('Show Chart'),
-                Switch(
+                Switch.adaptive(
                   value: _showChar,
                   onChanged: (value) {
                     setState(() {
