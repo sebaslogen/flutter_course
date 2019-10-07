@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_course/widgets/new_transaction.dart';
 
 import 'models/transaction.dart';
@@ -17,8 +16,6 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitUp]);
     return MaterialApp(
       title: 'Expenses planner',
       theme: ThemeData(
@@ -63,6 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
         id: 't3', title: 'Loooong', amount: 123.99, date: DateTime.now()),
   ];
 
+  bool _showChar = false;
+
   void _addNewTransaction(String title, double amount, DateTime date) {
     final newTx = Transaction(
         id: DateTime.now().toString(),
@@ -103,10 +102,12 @@ class _MyHomePageState extends State<MyHomePage> {
         MediaQuery.of(context).padding.top -
         MediaQuery.of(context).padding.bottom -
         appBar.preferredSize.height;
-    final chartHeightRatio = availableContentHeight * 0.3 >= 180
-        ? 0.3
-        : (180.0 / availableContentHeight);
-    final transactionsHeightRatio = 1 - chartHeightRatio;
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final txListContainer = Container(
+        height: availableContentHeight * 0.7,
+        child: TransactionsList(_userTransactions, _deleteTransaction));
     return Scaffold(
       appBar: appBar,
       floatingActionButton: FloatingActionButton(
@@ -118,14 +119,35 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              // We use a fix height so the chart columns can distribute their sizes with flexible
-              height: chartHeightRatio * availableContentHeight,
-              child: Chart(_userTransactions),
-            ),
-            Container(
-                height: transactionsHeightRatio * availableContentHeight,
-                child: TransactionsList(_userTransactions, _deleteTransaction))
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text('Show Chart'),
+                  Switch(
+                    value: _showChar,
+                    onChanged: (value) {
+                      setState(() {
+                        _showChar = value;
+                      });
+                    },
+                  )
+                ],
+              ),
+            if (!isLandscape)
+              Container(
+                // We use a fix height so the chart columns can distribute their sizes with flexible
+                height: availableContentHeight * 0.3,
+                child: Chart(_userTransactions),
+              ),
+            if (!isLandscape) txListContainer,
+            if (isLandscape) _showChar
+                ? Container(
+                    // We use a fix height so the chart columns can distribute their sizes with flexible
+                    height: availableContentHeight * 0.7,
+                    child: Chart(_userTransactions),
+                  )
+                : txListContainer
           ],
         ),
       ),
