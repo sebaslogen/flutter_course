@@ -87,16 +87,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: const Text('Expenses planner'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
+        )
+      ],
+    );
+    final availableContentHeight = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).padding.top -
+        MediaQuery.of(context).padding.bottom -
+        appBar.preferredSize.height;
+    final chartHeightRatio = availableContentHeight * 0.3 >= 180
+        ? 0.3
+        : (180.0 / availableContentHeight);
+    final transactionsHeightRatio = 1 - chartHeightRatio;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Expenses planner'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context),
-          )
-        ],
-      ),
+      appBar: appBar,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => _startAddNewTransaction(context),
@@ -108,10 +117,12 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Container(
               // We use a fix height so the chart columns can distribute their sizes with flexible
-              height: 200,
+              height: chartHeightRatio * availableContentHeight,
               child: Chart(_userTransactions),
             ),
-            TransactionsList(_userTransactions, _deleteTransaction)
+            Container(
+                height: transactionsHeightRatio * availableContentHeight,
+                child: TransactionsList(_userTransactions, _deleteTransaction))
           ],
         ),
       ),
