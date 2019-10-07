@@ -105,9 +105,6 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar.preferredSize.height;
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
-    final txListContainer = Container(
-        height: availableContentHeight * 0.7,
-        child: TransactionsList(_userTransactions, _deleteTransaction));
     return Scaffold(
       appBar: appBar,
       floatingActionButton: FloatingActionButton(
@@ -115,43 +112,45 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () => _startAddNewTransaction(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            if (isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const Text('Show Chart'),
-                  Switch(
-                    value: _showChar,
-                    onChanged: (value) {
-                      setState(() {
-                        _showChar = value;
-                      });
-                    },
-                  )
-                ],
-              ),
-            if (!isLandscape)
-              Container(
-                // We use a fix height so the chart columns can distribute their sizes with flexible
-                height: availableContentHeight * 0.3,
-                child: Chart(_userTransactions),
-              ),
-            if (!isLandscape) txListContainer,
-            if (isLandscape)
-              _showChar
-                  ? Container(
-                      // We use a fix height so the chart columns can distribute their sizes with flexible
-                      height: availableContentHeight * 0.7,
-                      child: Chart(_userTransactions),
-                    )
-                  : txListContainer
-          ],
-        ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          if (isLandscape)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text('Show Chart'),
+                Switch(
+                  value: _showChar,
+                  onChanged: (value) {
+                    setState(() {
+                      _showChar = value;
+                    });
+                  },
+                )
+              ],
+            ),
+          if (isLandscape)
+            _showChar
+                ? Expanded(child: Chart(_userTransactions))
+                : Expanded(
+                    child: txContainerBuilder(availableContentHeight, 1)),
+          if (!isLandscape)
+            Container(
+              // We use a fix height so the chart columns can distribute their sizes with flexible
+              height: availableContentHeight * 0.3,
+              child: Chart(_userTransactions),
+            ),
+          if (!isLandscape) txContainerBuilder(availableContentHeight, 0.7)
+        ],
       ),
     );
+  }
+
+  Container txContainerBuilder(
+      double availableContentHeight, double percentage) {
+    return Container(
+        height: availableContentHeight * percentage,
+        child: TransactionsList(_userTransactions, _deleteTransaction));
   }
 }
