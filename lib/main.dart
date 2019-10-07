@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_course/widgets/new_transaction.dart';
 
 import 'models/transaction.dart';
@@ -16,6 +17,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitUp]);
     return MaterialApp(
       title: 'Expenses planner',
       theme: ThemeData(
