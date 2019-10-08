@@ -6,8 +6,6 @@ import 'package:flutter_course/widgets/main_body.dart';
 import 'package:flutter_course/widgets/new_transaction.dart';
 
 import 'models/transaction.dart';
-import 'widgets/chart.dart';
-import 'widgets/transactions_list.dart';
 //import 'package:flutter/rendering.dart'; // Required for debug paint
 
 void main() {
