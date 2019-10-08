@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_course/widgets/main_body.dart';
@@ -16,8 +18,8 @@ void main() {
 }
 
 bool get isIOS {
-//  return Platform.isIOS; // For production App
-  return true; // To test on Windows
+  return Platform.isIOS; // For production App
+//  return true; // To test on Windows
 }
 
 class MyApp extends StatelessWidget {
