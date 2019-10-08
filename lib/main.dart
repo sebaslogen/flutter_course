@@ -94,28 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final PreferredSizeWidget appBar = isIOS
-        ? CupertinoNavigationBar(
-            middle: const Text('Expenses planner'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: () => _startAddNewTransaction(context),
-                  child: const Icon(CupertinoIcons.add),
-                ),
-              ],
-            ),
-          )
-        : AppBar(
-            title: const Text('Expenses planner'),
-            actions: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () => _startAddNewTransaction(context),
-              )
-            ],
-          );
+    final appBar = _buildAppBar(context);
     final mediaQuery = MediaQuery.of(context);
     final availableContentHeight = mediaQuery.size.height -
         mediaQuery.padding.top -
@@ -140,5 +119,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 FloatingActionButtonLocation.centerFloat,
             body: pageBody,
           );
+  }
+
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    return isIOS
+      ? CupertinoNavigationBar(
+          middle: const Text('Expenses planner'),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () => _startAddNewTransaction(context),
+                child: const Icon(CupertinoIcons.add),
+              ),
+            ],
+          ),
+        )
+      : AppBar(
+          title: const Text('Expenses planner'),
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.add),
+              onPressed: () => _startAddNewTransaction(context),
+            )
+          ],
+        );
   }
 }
