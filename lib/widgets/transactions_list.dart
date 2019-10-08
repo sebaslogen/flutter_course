@@ -40,7 +40,7 @@ class TransactionsList extends StatelessWidget {
                         child: FittedBox(
                           child: Text(
                             '\$${tx.amount.toStringAsFixed(2)}',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                         ),
@@ -55,7 +55,7 @@ class TransactionsList extends StatelessWidget {
                           color: Theme.of(context).primaryColorLight)),
                   trailing: MediaQuery.of(context).size.width > 460
                       ? FlatButton.icon(
-                          onPressed: () {},
+                          onPressed: () => deleteTransaction(tx.id),
                           icon: Icon(Icons.delete),
                           label: const Text('Delete'),
                           textColor: Theme.of(context).errorColor,
