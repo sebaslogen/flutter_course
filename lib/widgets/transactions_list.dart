@@ -10,10 +10,9 @@ class TransactionsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 300,
-      child: transactions.isEmpty
-          ? Column(
+    return transactions.isEmpty
+        ? LayoutBuilder(builder: (_, constraints) {
+            return Column(
               children: <Widget>[
                 Text(
                   'No transactions added yet',
@@ -21,48 +20,54 @@ class TransactionsList extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Container(
-                    height: 200,
+                    height: constraints.maxHeight * 0.6,
                     child: Image.asset('assets/images/waiting.png',
                         fit: BoxFit.cover))
               ],
-            )
-          : ListView.builder(
-              itemBuilder: (context, index) {
-                final tx = transactions[index];
-                return Card(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
-                  elevation: 2,
-                  child: ListTile(
-                    leading: CircleAvatar(
-                        radius: 30,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: FittedBox(
-                            child: Text(
-                              '\$${tx.amount.toStringAsFixed(2)}',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
-                            ),
+            );
+          })
+        : ListView.builder(
+            itemBuilder: (context, index) {
+              final tx = transactions[index];
+              return Card(
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
+                elevation: 2,
+                child: ListTile(
+                  leading: CircleAvatar(
+                      radius: 30,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: FittedBox(
+                          child: Text(
+                            '\$${tx.amount.toStringAsFixed(2)}',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
                           ),
-                        )),
-                    title: Text(
-                      tx.title,
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    subtitle: Text(DateFormat.yMMMEd().format(tx.date),
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Theme.of(context).primaryColorLight)),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      color: Theme.of(context).errorColor,
-                      onPressed: () => deleteTransaction(tx.id),
-                    ),
+                        ),
+                      )),
+                  title: Text(
+                    tx.title,
+                    style: Theme.of(context).textTheme.title,
                   ),
-                );
-              },
-              itemCount: transactions.length),
-    );
+                  subtitle: Text(DateFormat.yMMMEd().format(tx.date),
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Theme.of(context).primaryColorLight)),
+                  trailing: MediaQuery.of(context).size.width > 460
+                      ? FlatButton.icon(
+                          onPressed: () {},
+                          icon: Icon(Icons.delete),
+                          label: const Text('Delete'),
+                          textColor: Theme.of(context).errorColor,
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Theme.of(context).errorColor,
+                          onPressed: () => deleteTransaction(tx.id),
+                        ),
+                ),
+              );
+            },
+            itemCount: transactions.length);
   }
 }

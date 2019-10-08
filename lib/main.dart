@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_course/widgets/new_transaction.dart';
 
@@ -50,15 +52,17 @@ class _MyHomePageState extends State<MyHomePage> {
         id: 't1',
         title: 'New shiny shoes',
         amount: 69.99,
-        date: DateTime.now().subtract(Duration(days: 2))),
+        date: DateTime.now().subtract(const Duration(days: 2))),
     Transaction(
         id: 't2',
         title: 'Weekly groceries',
         amount: 16.53,
-        date: DateTime.now().subtract(Duration(days: 1))),
+        date: DateTime.now().subtract(const Duration(days: 1))),
     Transaction(
         id: 't3', title: 'Loooong', amount: 123.99, date: DateTime.now()),
   ];
+
+  bool _showChar = false;
 
   void _addNewTransaction(String title, double amount, DateTime date) {
     final newTx = Transaction(
@@ -87,34 +91,70 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final appBar = AppBar(
+      title: const Text('Expenses planner'),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.add),
+          onPressed: () => _startAddNewTransaction(context),
+        )
+      ],
+    );
+    final mediaQuery = MediaQuery.of(context);
+    final availableContentHeight = mediaQuery.size.height -
+        mediaQuery.padding.top -
+        mediaQuery.padding.bottom -
+        appBar.preferredSize.height;
+    final isLandscape = mediaQuery.orientation == Orientation.landscape;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Expenses planner'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () => _startAddNewTransaction(context),
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => _startAddNewTransaction(context),
-      ),
+      appBar: appBar,
+      floatingActionButton: Platform.isIOS
+          ? Container()
+          : FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () => _startAddNewTransaction(context),
+            ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          if (isLandscape)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text('Show Chart'),
+                Switch.adaptive(
+                  value: _showChar,
+                  onChanged: (value) {
+                    setState(() {
+                      _showChar = value;
+                    });
+                  },
+                )
+              ],
+            ),
+          if (isLandscape)
+            _showChar
+                ? Expanded(child: Chart(_userTransactions))
+                : Expanded(
+                    child: txContainerBuilder(availableContentHeight, 1)),
+          if (!isLandscape)
             Container(
               // We use a fix height so the chart columns can distribute their sizes with flexible
-              height: 200,
+              height: availableContentHeight * 0.3,
               child: Chart(_userTransactions),
             ),
-            TransactionsList(_userTransactions, _deleteTransaction)
-          ],
-        ),
+          if (!isLandscape) txContainerBuilder(availableContentHeight, 0.7)
+        ],
       ),
     );
+  }
+
+  Container txContainerBuilder(
+      double availableContentHeight, double percentage) {
+    return Container(
+        height: availableContentHeight * percentage,
+        child: TransactionsList(_userTransactions, _deleteTransaction));
   }
 }
