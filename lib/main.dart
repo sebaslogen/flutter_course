@@ -86,6 +86,12 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  void _deleteTransaction(String transactionId) {
+    setState(() {
+      _userTransactions.removeWhere((item) => item.id == transactionId);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final PreferredSizeWidget appBar = isIOS
@@ -115,7 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
         mediaQuery.padding.top -
         mediaQuery.padding.bottom -
         appBar.preferredSize.height;
-    final pageBody = MainBody(_userTransactions, availableContentHeight);
+    final pageBody =
+        MainBody(_userTransactions, _deleteTransaction, availableContentHeight);
     return isIOS
         ? CupertinoPageScaffold(
             child: pageBody,

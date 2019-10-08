@@ -5,10 +5,12 @@ import 'chart.dart';
 import 'transactions_list.dart';
 
 class MainBody extends StatefulWidget {
-  const MainBody(this.userTransactions, this.availableContentHeight);
+  const MainBody(this.userTransactions, this.deleteTransaction,
+      this.availableContentHeight);
 
-  final double availableContentHeight;
+  final Function deleteTransaction;
   final List<Transaction> userTransactions;
+  final double availableContentHeight;
 
   @override
   _MainBodyState createState() => _MainBodyState();
@@ -60,12 +62,7 @@ class _MainBodyState extends State<MainBody> {
       double availableContentHeight, double percentage) {
     return Container(
         height: availableContentHeight * percentage,
-        child: TransactionsList(widget.userTransactions, _deleteTransaction));
-  }
-
-  void _deleteTransaction(String transactionId) {
-    setState(() {
-      widget.userTransactions.removeWhere((item) => item.id == transactionId);
-    });
+        child: TransactionsList(
+            widget.userTransactions, widget.deleteTransaction));
   }
 }
