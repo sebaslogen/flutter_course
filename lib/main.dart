@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_course/widgets/new_transaction.dart';
 
@@ -13,6 +12,11 @@ void main() {
 //  debugPaintBaselinesEnabled = true; // Show text baselines
 //  debugPaintPointersEnabled = true; // Show touch events
   runApp(MyApp());
+}
+
+bool get isIOS {
+//  return Platform.isIOS; // For production App
+  return true; // To test on Windows
 }
 
 class MyApp extends StatelessWidget {
@@ -91,15 +95,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final appBar = AppBar(
-      title: const Text('Expenses planner'),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.add),
-          onPressed: () => _startAddNewTransaction(context),
-        )
-      ],
-    );
+    final PreferredSizeWidget appBar = isIOS
+        ? CupertinoNavigationBar(
+            middle: const Text('Expenses planner'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                GestureDetector(
+                  onTap: () => _startAddNewTransaction(context),
+                  child: Icon(CupertinoIcons.add),
+                ),
+              ],
+            ),
+          )
+        : AppBar(
+            title: const Text('Expenses planner'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.add),
+                onPressed: () => _startAddNewTransaction(context),
+              )
+            ],
+          );
     final mediaQuery = MediaQuery.of(context);
     final availableContentHeight = mediaQuery.size.height -
         mediaQuery.padding.top -
@@ -107,48 +124,55 @@ class _MyHomePageState extends State<MyHomePage> {
         appBar.preferredSize.height;
     final isLandscape = mediaQuery.orientation == Orientation.landscape;
 
-    return Scaffold(
-      appBar: appBar,
-      floatingActionButton: Platform.isIOS
-          ? Container()
-          : FloatingActionButton(
-              child: Icon(Icons.add),
-              onPressed: () => _startAddNewTransaction(context),
-            ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          if (isLandscape)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text('Show Chart'),
-                Switch.adaptive(
-                  value: _showChar,
-                  onChanged: (value) {
-                    setState(() {
-                      _showChar = value;
-                    });
-                  },
-                )
-              ],
-            ),
-          if (isLandscape)
-            _showChar
-                ? Expanded(child: Chart(_userTransactions))
-                : Expanded(
-                    child: txContainerBuilder(availableContentHeight, 1)),
-          if (!isLandscape)
-            Container(
-              // We use a fix height so the chart columns can distribute their sizes with flexible
-              height: availableContentHeight * 0.3,
-              child: Chart(_userTransactions),
-            ),
-          if (!isLandscape) txContainerBuilder(availableContentHeight, 0.7)
-        ],
-      ),
-    );
+    final pageBody = SafeArea(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        if (isLandscape)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('Show Chart'),
+              Switch.adaptive(
+                value: _showChar,
+                onChanged: (value) {
+                  setState(() {
+                    _showChar = value;
+                  });
+                },
+              )
+            ],
+          ),
+        if (isLandscape)
+          _showChar
+              ? Expanded(child: Chart(_userTransactions))
+              : Expanded(child: txContainerBuilder(availableContentHeight, 1)),
+        if (!isLandscape)
+          Container(
+            // We use a fix height so the chart columns can distribute their sizes with flexible
+            height: availableContentHeight * 0.3,
+            child: Chart(_userTransactions),
+          ),
+        if (!isLandscape) txContainerBuilder(availableContentHeight, 0.7)
+      ],
+    ));
+    return isIOS
+        ? CupertinoPageScaffold(
+            child: pageBody,
+            navigationBar: appBar,
+          )
+        : Scaffold(
+            appBar: appBar,
+            floatingActionButton: isIOS
+                ? Container()
+                : FloatingActionButton(
+                    child: Icon(Icons.add),
+                    onPressed: () => _startAddNewTransaction(context),
+                  ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            body: pageBody,
+          );
   }
 
   Container txContainerBuilder(
