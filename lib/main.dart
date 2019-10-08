@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_course/widgets/main_body.dart';
 import 'package:flutter_course/widgets/new_transaction.dart';
 
 import 'models/transaction.dart';
@@ -29,14 +30,14 @@ class MyApp extends StatelessWidget {
           accentColor: Colors.amber,
           fontFamily: 'Quicksand',
           textTheme: ThemeData.light().textTheme.copyWith(
-              title: TextStyle(
+              title: const TextStyle(
                   fontFamily: 'OpenSans',
                   fontSize: 18,
                   fontWeight: FontWeight.bold),
               button: TextStyle(color: Colors.white)),
           appBarTheme: AppBarTheme(
               textTheme: ThemeData.light().textTheme.copyWith(
-                  title: TextStyle(
+                  title: const TextStyle(
                       fontFamily: 'OpenSans',
                       fontSize: 20,
                       fontWeight: FontWeight.bold)))),
@@ -66,8 +67,6 @@ class _MyHomePageState extends State<MyHomePage> {
         id: 't3', title: 'Loooong', amount: 123.99, date: DateTime.now()),
   ];
 
-  bool _showChar = false;
-
   void _addNewTransaction(String title, double amount, DateTime date) {
     final newTx = Transaction(
         id: DateTime.now().toString(),
@@ -85,12 +84,6 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (_) {
           return NewTransaction(_addNewTransaction);
         });
-  }
-
-  void _deleteTransaction(String transactionId) {
-    setState(() {
-      _userTransactions.removeWhere((item) => item.id == transactionId);
-    });
   }
 
   @override
@@ -122,40 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
         mediaQuery.padding.top -
         mediaQuery.padding.bottom -
         appBar.preferredSize.height;
-    final isLandscape = mediaQuery.orientation == Orientation.landscape;
-
-    final pageBody = SafeArea(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        if (isLandscape)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text('Show Chart', style: Theme.of(context).textTheme.title),
-              Switch.adaptive(
-                value: _showChar,
-                onChanged: (value) {
-                  setState(() {
-                    _showChar = value;
-                  });
-                },
-              )
-            ],
-          ),
-        if (isLandscape)
-          _showChar
-              ? Expanded(child: Chart(_userTransactions))
-              : Expanded(child: txContainerBuilder(availableContentHeight, 1)),
-        if (!isLandscape)
-          Container(
-            // We use a fix height so the chart columns can distribute their sizes with flexible
-            height: availableContentHeight * 0.3,
-            child: Chart(_userTransactions),
-          ),
-        if (!isLandscape) txContainerBuilder(availableContentHeight, 0.7)
-      ],
-    ));
+    final pageBody = MainBody(_userTransactions, availableContentHeight);
     return isIOS
         ? CupertinoPageScaffold(
             child: pageBody,
@@ -173,12 +133,5 @@ class _MyHomePageState extends State<MyHomePage> {
                 FloatingActionButtonLocation.centerFloat,
             body: pageBody,
           );
-  }
-
-  Container txContainerBuilder(
-      double availableContentHeight, double percentage) {
-    return Container(
-        height: availableContentHeight * percentage,
-        child: TransactionsList(_userTransactions, _deleteTransaction));
   }
 }
