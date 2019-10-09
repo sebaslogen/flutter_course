@@ -28,8 +28,11 @@ class TransactionsList extends StatelessWidget {
           })
         : ListView.builder(
             itemBuilder: (_, index) {
+              final transaction = transactions[index];
               return TransactionItem(
-                  transaction: transactions[index],
+                  // This key is used to avoid incorrect list updates when any child is a stateful widget
+                  key: ValueKey(transaction.id),
+                  transaction: transaction,
                   deleteTransaction: deleteTransaction);
             },
             itemCount: transactions.length);
