@@ -28,21 +28,27 @@ class CartScreen extends StatelessWidget {
                   ),
                   const Spacer(),
                   Consumer<Cart>(
-                      builder: (ctx, cart, _) => Chip(
+                      builder: (ctx, cart, _) =>
+                          Chip(
                             label: Text(
                               '\$${cart.totalAmount.toStringAsFixed(2)}',
                               style: TextStyle(
-                                  color: Theme.of(context)
+                                  color: Theme
+                                      .of(context)
                                       .primaryTextTheme
                                       .title
                                       .color),
                             ),
-                            backgroundColor: Theme.of(context).primaryColor,
+                            backgroundColor: Theme
+                                .of(context)
+                                .primaryColor,
                           )),
                   const SizedBox(width: 10),
                   FlatButton(
                     child: const Text('Order Now'),
-                    textColor: Theme.of(context).primaryColor,
+                    textColor: Theme
+                        .of(context)
+                        .primaryColor,
                     onPressed: () {},
                   )
                 ],
@@ -52,13 +58,16 @@ class CartScreen extends StatelessWidget {
           const SizedBox(height: 10),
           Expanded(
             child: Consumer<Cart>(
-                builder: (ctx, cart, _) => ListView.builder(
-                    itemCount: cart.items.length,
-                    itemBuilder: (ctx, i) {
-                      final item = cart.items.values.toList()[i];
-                      return CartItem(
-                          item.id, item.price, item.quantity, item.title);
-                    })),
+                builder: (ctx, cart, _) {
+                  final items = cart.items;
+                  return ListView.builder(
+                      itemCount: items.length,
+                      itemBuilder: (ctx, i) {
+                        final item = items.values.toList()[i];
+                        return CartItem(items.keys.toList()[i], item.id,
+                            item.price, item.quantity, item.title);
+                      });
+                }),
           )
         ],
       ),
