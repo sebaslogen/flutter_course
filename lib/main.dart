@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course/providers/products_provider.dart';
 import 'package:flutter_course/screens/product_detail_screen.dart';
 import 'package:flutter_course/screens/products_overview_screen.dart';
+import 'package:provider/provider.dart';
 //import 'package:flutter/rendering.dart'; // Required for debug paint
 
 void main() {
@@ -13,17 +15,17 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MyShop',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-        accentColor: Colors.deepOrange,
-        fontFamily: 'Lato'
+    return ChangeNotifierProvider(
+      builder: (ctx) => Products(),
+      child: MaterialApp(
+        title: 'MyShop',
+        theme: ThemeData(
+            primarySwatch: Colors.purple,
+            accentColor: Colors.deepOrange,
+            fontFamily: 'Lato'),
+        home: ProductsOverviewScreen(),
+        routes: {ProductDetailScreen.routeName: (ctx) => ProductDetailScreen()},
       ),
-      home: ProductsOverviewScreen(),
-      routes: {
-        ProductDetailScreen.routeName: (ctx) => ProductDetailScreen()
-      },
     );
   }
 }
