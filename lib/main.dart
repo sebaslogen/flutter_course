@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'providers/cart_provider.dart';
 import 'providers/orders_provider.dart';
+import 'screens/orders_screen.dart';
 //import 'package:flutter/rendering.dart'; // Required for debug paint
 
 void main() {
@@ -34,7 +35,8 @@ class MyApp extends StatelessWidget {
         home: ProductsOverviewScreen(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-          CartScreen.routeName: (ctx) => CartScreen()
+          CartScreen.routeName: (ctx) => CartScreen(),
+          OrdersScreen.routeName: (ctx) => OrdersScreen()
         },
       ),
     );
