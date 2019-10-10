@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course/screens/product_detail_screen.dart';
 import 'package:flutter_course/screens/products_overview_screen.dart';
 //import 'package:flutter/rendering.dart'; // Required for debug paint
 
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Lato'
       ),
       home: ProductsOverviewScreen(),
+      routes: {
+        ProductDetailScreen.routeName: (ctx) => ProductDetailScreen()
+      },
     );
   }
 }
