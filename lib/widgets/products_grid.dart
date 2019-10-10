@@ -17,7 +17,9 @@ class ProductsGrid extends StatelessWidget {
         itemCount: loadedProducts.length,
         itemBuilder: (ctx, i) {
           final product = loadedProducts[i];
-          return ProductItem(product.id, product.title, product.imageUrl);
+          // We need to use value provider to prevent list recreation issues
+          return ChangeNotifierProvider.value(
+              value: product, child: ProductItem());
         });
   }
 }
