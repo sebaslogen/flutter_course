@@ -27,6 +27,13 @@ class Cart with ChangeNotifier {
             .fold<int>(0, (total, cartItem) => total + cartItem.quantity);
   }
 
+  double get totalAmount {
+    return _items.isEmpty
+        ? 0.0
+        : _items.values.fold<double>(0.0,
+            (total, cartItem) => total + (cartItem.price * cartItem.quantity));
+  }
+
   void addItem(String productId, double price, String title) {
     if (_items.containsKey(productId)) {
       _items.update(
