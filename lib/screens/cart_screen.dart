@@ -39,6 +39,7 @@ class CartScreen extends StatelessWidget {
                             ),
                             backgroundColor: Theme.of(context).primaryColor,
                           )),
+                  const SizedBox(width: 10),
                   FlatButton(
                     child: const Text('Order Now'),
                     textColor: Theme.of(context).primaryColor,
@@ -48,7 +49,7 @@ class CartScreen extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Expanded(
             child: Consumer<Cart>(
                 builder: (ctx, cart, _) => ListView.builder(
