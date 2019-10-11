@@ -116,9 +116,7 @@ class _AuthCardState extends State<AuthCard>
             begin: Size(double.infinity, 260), end: Size(double.infinity, 320))
         .animate(
             CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn));
-    _heightAnimation.addListener(() => setState(() {}));
   }
-
 
   @override
   void dispose() {
@@ -214,11 +212,15 @@ class _AuthCardState extends State<AuthCard>
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 8.0,
-      child: Container(
-        height: _heightAnimation.value.height,
-        constraints: BoxConstraints(minHeight: _heightAnimation.value.height),
-        width: deviceSize.width * 0.75,
-        padding: EdgeInsets.all(16.0),
+      child: AnimatedBuilder(
+        animation: _heightAnimation,
+        builder: (ctx, ch) => Container(
+            height: _heightAnimation.value.height,
+            constraints:
+                BoxConstraints(minHeight: _heightAnimation.value.height),
+            width: deviceSize.width * 0.75,
+            padding: const EdgeInsets.all(16.0),
+            child: ch),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -262,11 +264,9 @@ class _AuthCardState extends State<AuthCard>
                           }
                         : null,
                   ),
-                SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 if (_isLoading)
-                  CircularProgressIndicator()
+                  const CircularProgressIndicator()
                 else
                   RaisedButton(
                     child:
@@ -275,8 +275,8 @@ class _AuthCardState extends State<AuthCard>
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30.0, vertical: 8.0),
                     color: Theme.of(context).primaryColor,
                     textColor: Theme.of(context).primaryTextTheme.button.color,
                   ),
@@ -284,7 +284,8 @@ class _AuthCardState extends State<AuthCard>
                   child: Text(
                       '${_authMode == AuthMode.Login ? 'SIGNUP' : 'LOGIN'} INSTEAD'),
                   onPressed: _switchAuthMode,
-                  padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30.0, vertical: 4),
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   textColor: Theme.of(context).primaryColor,
                 ),
