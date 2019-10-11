@@ -14,25 +14,20 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final productId =
         ModalRoute.of(context).settings.arguments as String; // is the id!
-    final loadedProduct = Provider.of<Products>(
-      context,
-      listen: false,
-    ).findById(productId);
+    final product =
+        Provider.of<Products>(context, listen: false).findById(productId);
     return Scaffold(
-//      appBar: AppBar(
-//        title: Text(loadedProduct.title),
-//      ),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverAppBar(
             expandedHeight: 300,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(loadedProduct.title),
+              title: Text(product.title),
               background: Hero(
-                tag: loadedProduct.imageUrl,
+                tag: product.imageUrl,
                 child: Image.network(
-                  loadedProduct.imageUrl,
+                  product.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -40,21 +35,21 @@ class ProductDetailScreen extends StatelessWidget {
           ),
           SliverList(
             delegate: SliverChildListDelegate([
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
-                '\$${loadedProduct.price}',
+                '\$${product.price}',
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 20,
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 width: double.infinity,
                 child: Text(
-                  loadedProduct.description,
+                  product.description,
                   textAlign: TextAlign.center,
                   softWrap: true,
                 ),
