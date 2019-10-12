@@ -6,8 +6,11 @@
 
 build/
 
+# Dart/Flutter
 .flutter-plugins
 ios/Flutter/flutter_export_environment.sh
+.idea/libraries/Dart_Packages.xml
+.idea/libraries/Dart_SDK.xml
 
 # Built application files
 *.apk
