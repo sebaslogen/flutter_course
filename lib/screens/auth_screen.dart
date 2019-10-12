@@ -94,8 +94,7 @@ class AuthCard extends StatefulWidget {
   _AuthCardState createState() => _AuthCardState();
 }
 
-class _AuthCardState extends State<AuthCard>
-    with SingleTickerProviderStateMixin {
+class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
@@ -107,7 +106,9 @@ class _AuthCardState extends State<AuthCard>
   FocusNode _userFocus;
   FocusNode _passFocus;
   AnimationController _controller;
+  AnimationController _buttonTextOpacityController;
   Animation<double> _opacityAnimation;
+  Animation<double> _buttonTextOpacityAnimation;
   Animation<Offset> _slideAnimation;
 
 //  Animation<Size> _slideAnimation;
@@ -124,6 +125,24 @@ class _AuthCardState extends State<AuthCard>
     _slideAnimation = Tween<Offset>(
             begin: const Offset(0, -0.75), end: const Offset(0, 0))
         .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+    _buttonTextOpacityController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
+    _buttonTextOpacityAnimation =
+        TweenSequence<double>(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 1.0, end: 0.0),
+        weight: 0.00001,
+      ),
+      TweenSequenceItem<double>(
+        tween: ConstantTween<double>(0.0),
+        weight: 19.99999,
+      ),
+      TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: 1.0),
+        weight: 80.0,
+      ),
+    ]).animate(CurvedAnimation(
+            parent: _buttonTextOpacityController, curve: Curves.easeIn));
   }
 
   @override
@@ -131,6 +150,7 @@ class _AuthCardState extends State<AuthCard>
     _userFocus.dispose();
     _passFocus.dispose();
     _controller.dispose();
+    _buttonTextOpacityController.dispose();
     super.dispose();
   }
 
@@ -138,11 +158,11 @@ class _AuthCardState extends State<AuthCard>
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('An Error Occurred!'),
+        title: const Text('An Error Occurred!'),
         content: Text(message),
         actions: <Widget>[
           FlatButton(
-            child: Text('Okay'),
+            child: const Text('Okay'),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -176,7 +196,7 @@ class _AuthCardState extends State<AuthCard>
         );
       }
     } on HttpException catch (error) {
-      var errorMessage = 'Authentication failed';
+      String errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
         errorMessage = 'This email address is already in use.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
@@ -190,7 +210,7 @@ class _AuthCardState extends State<AuthCard>
       }
       _showErrorDialog(errorMessage);
     } catch (error) {
-      const errorMessage =
+      const String errorMessage =
           'Could not authenticate you. Please try again later.';
       _showErrorDialog(errorMessage);
     }
@@ -205,11 +225,15 @@ class _AuthCardState extends State<AuthCard>
       setState(() {
         _authMode = AuthMode.Signup;
         _controller.forward();
+        _buttonTextOpacityController.reset();
+        _buttonTextOpacityController.forward();
       });
     } else {
       setState(() {
         _authMode = AuthMode.Login;
         _controller.reverse();
+        _buttonTextOpacityController.reset();
+        _buttonTextOpacityController.forward();
       });
     }
   }
@@ -294,21 +318,24 @@ class _AuthCardState extends State<AuthCard>
                 if (_isLoading)
                   const CircularProgressIndicator()
                 else
-                  AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    curve: Curves.easeIn,
-                    child: RaisedButton(
-                      child: Text(
-                          _authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
-                      onPressed: _submit,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                  RaisedButton(
+                    onPressed: _submit,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30.0, vertical: 8.0),
+                    color: Theme.of(context).primaryColor,
+                    textColor: Theme.of(context).primaryTextTheme.button.color,
+                    child: AnimatedSize(
+                      vsync: this,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      child: FadeTransition(
+                        opacity: _buttonTextOpacityAnimation,
+                        child: Text(
+                            _authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
                       ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 30.0, vertical: 8.0),
-                      color: Theme.of(context).primaryColor,
-                      textColor:
-                          Theme.of(context).primaryTextTheme.button.color,
                     ),
                   ),
                 FlatButton(
