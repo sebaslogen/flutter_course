@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_complete_guide/helpers/custom_route.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +16,12 @@ import './screens/products_overview_screen.dart';
 import './screens/splash_screen.dart';
 import './screens/user_products_screen.dart';
 
-void main() => runApp(MyApp());
+void main() {
+//  debugPaintSizeEnabled = true; // Show sizes, margins and paddings
+//  debugPaintBaselinesEnabled = true; // Show text baselines
+//  debugPaintPointersEnabled = true; // Show touch events
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
