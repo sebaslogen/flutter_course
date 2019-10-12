@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -120,11 +121,15 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
     _passFocus = FocusNode();
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
-    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
-    _slideAnimation = Tween<Offset>(
-            begin: const Offset(0, -0.75), end: const Offset(0, 0))
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+            parent: _controller,
+            curve: Interval(0.3, 1.0, curve: Curves.easeIn)));
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, -0.75), end: const Offset(0, 0))
+            .animate(CurvedAnimation(
+                parent: _controller,
+                curve: Interval(0.2, 1.0, curve: Curves.easeIn)));
     _buttonTextOpacityController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
     _buttonTextOpacityAnimation =
@@ -253,6 +258,7 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 TextFormField(
                     decoration: const InputDecoration(labelText: 'E-Mail'),
@@ -291,28 +297,48 @@ class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
                       _passFocus.unfocus();
                       _submit();
                     }),
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeIn,
-                  height: _authMode == AuthMode.Signup ? 70 : 0,
-                  child: SlideTransition(
-                    position: _slideAnimation,
-                    child: FadeTransition(
-                        opacity: _opacityAnimation,
-                        child: TextFormField(
-                            enabled: _authMode == AuthMode.Signup,
-                            decoration: const InputDecoration(
-                                labelText: 'Confirm Password'),
-                            obscureText: true,
-                            validator: _authMode == AuthMode.Signup
-                                ? (value) {
-                                    if (value != _passwordController.text) {
-                                      return 'Passwords do not match!';
-                                    }
-                                  }
-                                : null,
-                            onFieldSubmitted: (_) => _submit())),
-                  ),
+                // Animate "Confirm Password" field's appearance
+                // 1.Height, 2.Slide from top, 3.Fade In & 4.65% width to 100%
+                LayoutBuilder(
+                  builder: (_, constraints) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      height: _authMode == AuthMode.Signup ? 70 : 0,
+                      alignment: Alignment.centerLeft,
+                      // Alignment needed for child's width & alignment
+                      child: SlideTransition(
+                        position: _slideAnimation,
+                        child: FadeTransition(
+                            opacity: _opacityAnimation,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Interval(0.65, 1.0, curve: Curves.easeIn),
+                              width: _authMode == AuthMode.Signup
+                                  ? constraints.maxWidth
+                                  : constraints.maxWidth * 0.6,
+                              child: Container(
+                                constraints: BoxConstraints(
+                                    maxWidth: constraints.minWidth),
+                                child: TextFormField(
+                                    enabled: _authMode == AuthMode.Signup,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Confirm Password'),
+                                    obscureText: true,
+                                    validator: _authMode == AuthMode.Signup
+                                        ? (value) {
+                                            if (value !=
+                                                _passwordController.text) {
+                                              return 'Passwords do not match!';
+                                            }
+                                          }
+                                        : null,
+                                    onFieldSubmitted: (_) => _submit()),
+                              ),
+                            )),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 20),
                 if (_isLoading)
