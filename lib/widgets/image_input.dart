@@ -20,6 +20,9 @@ class _ImageInputState extends State<ImageInput> {
   Future<void> _takePicture() async {
     final imageFile =
         await ImagePicker.pickImage(source: ImageSource.camera, maxWidth: 600);
+    if (imageFile == null) {
+      return;
+    }
     setState(() {
       _storedImage = imageFile;
     });
@@ -34,7 +37,7 @@ class _ImageInputState extends State<ImageInput> {
     return Row(
       children: <Widget>[
         Container(
-          width: 100,
+          width: 150,
           height: 100,
           decoration:
               BoxDecoration(border: Border.all(width: 1, color: Colors.grey)),
