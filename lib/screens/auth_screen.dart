@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -94,8 +95,7 @@ class AuthCard extends StatefulWidget {
   _AuthCardState createState() => _AuthCardState();
 }
 
-class _AuthCardState extends State<AuthCard>
-    with SingleTickerProviderStateMixin {
+class _AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
   final GlobalKey<FormState> _formKey = GlobalKey();
   AuthMode _authMode = AuthMode.Login;
   Map<String, String> _authData = {
@@ -104,25 +104,58 @@ class _AuthCardState extends State<AuthCard>
   };
   var _isLoading = false;
   final _passwordController = TextEditingController();
+  FocusNode _userFocus;
+  FocusNode _passFocus;
   AnimationController _controller;
+  AnimationController _buttonTextOpacityController;
   Animation<double> _opacityAnimation;
+  Animation<double> _buttonTextOpacityAnimation;
   Animation<Offset> _slideAnimation;
+
+//  Animation<Size> _slideAnimation;
 
   @override
   void initState() {
     super.initState();
+    _userFocus = FocusNode();
+    _passFocus = FocusNode();
     _controller = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
-    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
-    _slideAnimation = Tween<Offset>(
-            begin: const Offset(0, -1.5), end: const Offset(0, 0))
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeIn));
+    _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+        CurvedAnimation(
+            parent: _controller,
+            curve: Interval(0.3, 1.0, curve: Curves.easeIn)));
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, -0.75), end: const Offset(0, 0))
+            .animate(CurvedAnimation(
+                parent: _controller,
+                curve: Interval(0.2, 1.0, curve: Curves.easeIn)));
+    _buttonTextOpacityController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 300));
+    _buttonTextOpacityAnimation =
+        TweenSequence<double>(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 1.0, end: 0.0),
+        weight: 0.00001,
+      ),
+      TweenSequenceItem<double>(
+        tween: ConstantTween<double>(0.0),
+        weight: 19.99999,
+      ),
+      TweenSequenceItem<double>(
+        tween: Tween<double>(begin: 0.0, end: 1.0),
+        weight: 80.0,
+      ),
+    ]).animate(CurvedAnimation(
+            parent: _buttonTextOpacityController, curve: Curves.easeIn));
   }
 
   @override
   void dispose() {
+    _userFocus.dispose();
+    _passFocus.dispose();
     _controller.dispose();
+    _buttonTextOpacityController.dispose();
     super.dispose();
   }
 
@@ -130,11 +163,11 @@ class _AuthCardState extends State<AuthCard>
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text('An Error Occurred!'),
+        title: const Text('An Error Occurred!'),
         content: Text(message),
         actions: <Widget>[
           FlatButton(
-            child: Text('Okay'),
+            child: const Text('Okay'),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -168,7 +201,7 @@ class _AuthCardState extends State<AuthCard>
         );
       }
     } on HttpException catch (error) {
-      var errorMessage = 'Authentication failed';
+      String errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
         errorMessage = 'This email address is already in use.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
@@ -182,7 +215,7 @@ class _AuthCardState extends State<AuthCard>
       }
       _showErrorDialog(errorMessage);
     } catch (error) {
-      const errorMessage =
+      const String errorMessage =
           'Could not authenticate you. Please try again later.';
       _showErrorDialog(errorMessage);
     }
@@ -197,11 +230,15 @@ class _AuthCardState extends State<AuthCard>
       setState(() {
         _authMode = AuthMode.Signup;
         _controller.forward();
+        _buttonTextOpacityController.reset();
+        _buttonTextOpacityController.forward();
       });
     } else {
       setState(() {
         _authMode = AuthMode.Login;
         _controller.reverse();
+        _buttonTextOpacityController.reset();
+        _buttonTextOpacityController.forward();
       });
     }
   }
@@ -214,75 +251,100 @@ class _AuthCardState extends State<AuthCard>
         borderRadius: BorderRadius.circular(10.0),
       ),
       elevation: 8.0,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeIn,
-        height: _authMode == AuthMode.Signup ? 340 : 270,
+      child: Container(
         width: deviceSize.width * 0.75,
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'E-Mail'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value.isEmpty || !value.contains('@')) {
-                      return 'Invalid email!';
-                    }
-                  },
-                  onSaved: (value) {
-                    _authData['email'] = value;
-                  },
-                ),
+                    decoration: const InputDecoration(labelText: 'E-Mail'),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    focusNode: _userFocus,
+                    validator: (value) {
+                      if (value.isEmpty || !value.contains('@')) {
+                        return 'Invalid email!';
+                      }
+                    },
+                    onSaved: (value) {
+                      _authData['email'] = value;
+                    },
+                    onFieldSubmitted: (_) {
+                      _userFocus.unfocus();
+                      FocusScope.of(context).requestFocus(_passFocus);
+                    }),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Password'),
-                  obscureText: true,
-                  controller: _passwordController,
-                  validator: (value) {
-                    if (value.isEmpty || value.length < 5) {
-                      return 'Password is too short!';
-                    }
-                  },
-                  onSaved: (value) {
-                    _authData['password'] = value;
-                  },
-                ),
-                AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeIn,
-                  constraints: BoxConstraints(
-                      minHeight: _authMode == AuthMode.Signup ? 60 : 0,
-                      maxHeight: _authMode == AuthMode.Signup ? 120 : 0),
-                  child: FadeTransition(
-                    opacity: _opacityAnimation,
-                    child: SlideTransition(
-                      position: _slideAnimation,
-                      child: TextFormField(
-                        enabled: _authMode == AuthMode.Signup,
-                        decoration:
-                            InputDecoration(labelText: 'Confirm Password'),
-                        obscureText: true,
-                        validator: _authMode == AuthMode.Signup
-                            ? (value) {
-                                if (value != _passwordController.text) {
-                                  return 'Passwords do not match!';
-                                }
-                              }
-                            : null,
+                    decoration: const InputDecoration(labelText: 'Password'),
+                    obscureText: true,
+                    controller: _passwordController,
+                    textInputAction: _authMode == AuthMode.Signup
+                        ? TextInputAction.next
+                        : TextInputAction.done,
+                    focusNode: _passFocus,
+                    validator: (value) {
+                      if (value.isEmpty || value.length < 5) {
+                        return 'Password is too short!';
+                      }
+                    },
+                    onSaved: (value) {
+                      _authData['password'] = value;
+                    },
+                    onFieldSubmitted: (_) {
+                      _passFocus.unfocus();
+                      _submit();
+                    }),
+                // Animate "Confirm Password" field's appearance
+                // 1.Height, 2.Slide from top, 3.Fade In & 4.65% width to 100%
+                LayoutBuilder(
+                  builder: (_, constraints) {
+                    return AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeIn,
+                      height: _authMode == AuthMode.Signup ? 70 : 0,
+                      alignment: Alignment.centerLeft,
+                      // Alignment needed for child's width & alignment
+                      child: SlideTransition(
+                        position: _slideAnimation,
+                        child: FadeTransition(
+                            opacity: _opacityAnimation,
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Interval(0.65, 1.0, curve: Curves.easeIn),
+                              width: _authMode == AuthMode.Signup
+                                  ? constraints.maxWidth
+                                  : constraints.maxWidth * 0.6,
+                              child: Container(
+                                constraints: BoxConstraints(
+                                    maxWidth: constraints.minWidth),
+                                child: TextFormField(
+                                    enabled: _authMode == AuthMode.Signup,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Confirm Password'),
+                                    obscureText: true,
+                                    validator: _authMode == AuthMode.Signup
+                                        ? (value) {
+                                            if (value !=
+                                                _passwordController.text) {
+                                              return 'Passwords do not match!';
+                                            }
+                                          }
+                                        : null,
+                                    onFieldSubmitted: (_) => _submit()),
+                              ),
+                            )),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 20),
                 if (_isLoading)
                   const CircularProgressIndicator()
                 else
                   RaisedButton(
-                    child:
-                        Text(_authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
                     onPressed: _submit,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
@@ -291,6 +353,16 @@ class _AuthCardState extends State<AuthCard>
                         horizontal: 30.0, vertical: 8.0),
                     color: Theme.of(context).primaryColor,
                     textColor: Theme.of(context).primaryTextTheme.button.color,
+                    child: AnimatedSize(
+                      vsync: this,
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                      child: FadeTransition(
+                        opacity: _buttonTextOpacityAnimation,
+                        child: Text(
+                            _authMode == AuthMode.Login ? 'LOGIN' : 'SIGN UP'),
+                      ),
+                    ),
                   ),
                 FlatButton(
                   child: Text(
