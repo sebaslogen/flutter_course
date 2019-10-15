@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course/helpers/location_helper.dart';
 import 'package:flutter_course/models/secret.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
@@ -9,16 +10,30 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
+
   String _previewImageUrl;
+  String _mapsApiKey;
+
+  @override
+  void initState() {
+    super.initState();
+    _mapsApiKey = Provider.of<Secret>(context, listen: false).apiKey;
+  }
 
   Future<void> _getCurrentLocation() async {
     final locationData = await Location().getLocation();
 
+    final previewImageUrl = LocationHelper.generateLocationPreviewImage(
+        apiKey: _mapsApiKey,
+        latitude: locationData.latitude,
+        longitude: locationData.longitude);
+    setState(() {
+      _previewImageUrl = previewImageUrl;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    final mapsApiKey = Provider.of<Secret>(context, listen: false).apiKey;
     return Column(
       children: <Widget>[
         Container(
@@ -48,7 +63,7 @@ class _LocationInputState extends State<LocationInput> {
                 textColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.map),
                 onPressed: () {
-                  print('Key: $mapsApiKey');
+                  print('Key: $_mapsApiKey');
                 })
           ],
         )
