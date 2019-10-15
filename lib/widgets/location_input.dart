@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course/models/secret.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 class LocationInput extends StatefulWidget {
   @override
@@ -16,6 +18,7 @@ class _LocationInputState extends State<LocationInput> {
 
   @override
   Widget build(BuildContext context) {
+    final mapsApiKey = Provider.of<Secret>(context, listen: false).apiKey;
     return Column(
       children: <Widget>[
         Container(
@@ -44,7 +47,9 @@ class _LocationInputState extends State<LocationInput> {
                 label: const Text('Select on Map'),
                 textColor: Theme.of(context).primaryColor,
                 icon: Icon(Icons.map),
-                onPressed: () {})
+                onPressed: () {
+                  print('Key: $mapsApiKey');
+                })
           ],
         )
       ],
