@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course/providers/great_places.dart';
-import 'package:flutter_course/providers/secrets_provider.dart';
 import 'package:flutter_course/screens/add_place.dart';
 import 'package:flutter_course/screens/places_list_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'models/secret.dart';
 import 'widgets/ApisProviderWidget.dart';
 
 void main() {

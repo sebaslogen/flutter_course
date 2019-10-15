@@ -18,7 +18,7 @@ class PlacesListScreen extends StatelessWidget {
               })
         ],
       ),
-      body: FutureBuilder(
+      body: FutureBuilder<void>(
         future: Provider.of<GreatPlaces>(context, listen: false)
             .fetchAndSetPlaces(),
         builder: (ctx, snapshot) =>
