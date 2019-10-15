@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_course/providers/great_places.dart';
 import 'package:flutter_course/widgets/image_input.dart';
+import 'package:flutter_course/widgets/location_input.dart';
 import 'package:provider/provider.dart';
 
 class AddPlaceScreen extends StatefulWidget {
@@ -33,7 +34,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add a New Place'),
+        title: const Text('Add a New Place'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -49,7 +50,9 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                     controller: _titleController,
                   ),
                   const SizedBox(height: 10),
-                  ImageInput(_selectImage)
+                  ImageInput(_selectImage),
+                  const SizedBox(height: 10),
+                  LocationInput()
                 ],
               ),
             ),
