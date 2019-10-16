@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_course/models/place.dart';
+import 'package:flutter_course/models/secret.dart';
 import 'package:flutter_course/providers/great_places.dart';
 import 'package:flutter_course/widgets/image_input.dart';
 import 'package:flutter_course/widgets/location_input.dart';
@@ -24,11 +25,14 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
   }
 
   void _savePlace() {
-    if (_titleController.text.isEmpty || _pickedImage == null) {
+    if (_titleController.text.isEmpty ||
+        _pickedImage == null ||
+        _pickedLocation == null) {
       return; // TODO: Show error messages dialog
     }
-    Provider.of<GreatPlaces>(context)
-        .addPlace(_titleController.text, _pickedImage);
+    final mapsApiKey = Provider.of<Secret>(context, listen: false).apiKey;
+    Provider.of<GreatPlaces>(context, listen: false)
+        .addPlace(mapsApiKey, _titleController.text, _pickedImage, _pickedLocation);
     Navigator.of(context).pop();
   }
 

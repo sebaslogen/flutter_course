@@ -10,8 +10,17 @@ class LocationHelper {
 
   static Future<String> getPlaceAddress(
       {String apiKey, double latitude, double longitude}) async {
-    final response = await http.get(
-        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey');
-    return json.decode(response.body)['results'][0]['formatted_address'];
+    String responseBody;
+    try {
+      final response = await http.get(
+          'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey');
+      responseBody = response.body;
+      return json.decode(responseBody)['results'][0]['formatted_address'];
+    } catch (error) {
+      if (responseBody != null) {
+        throw Exception('Error parsing expected fields in $responseBody');
+      }
+      rethrow;
+    }
   }
 }

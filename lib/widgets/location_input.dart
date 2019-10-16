@@ -25,17 +25,22 @@ class _LocationInputState extends State<LocationInput> {
     _mapsApiKey = Provider.of<Secret>(context, listen: false).apiKey;
   }
 
-  Future<void> _getCurrentLocation() async {
-    final locationData = await Location().getLocation();
-
+  void _showPreview(double latitude, double longitude) {
     final previewImageUrl = LocationHelper.generateLocationPreviewImage(
-        apiKey: _mapsApiKey,
-        latitude: locationData.latitude,
-        longitude: locationData.longitude);
+        apiKey: _mapsApiKey, latitude: latitude, longitude: longitude);
     setState(() {
       _previewImageUrl = previewImageUrl;
     });
-    widget.onSelectPlace(locationData.latitude, locationData.longitude);
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      final locationData = await Location().getLocation();
+      _showPreview(locationData.latitude, locationData.longitude);
+      widget.onSelectPlace(locationData.latitude, locationData.longitude);
+    } catch (error) {
+      return; // Handle when user does not grant the permission
+    }
   }
 
   Future<void> _selectOnMap() async {
@@ -48,6 +53,7 @@ class _LocationInputState extends State<LocationInput> {
     if (selectedLocation == null) {
       return;
     }
+    _showPreview(selectedLocation.latitude, selectedLocation.longitude);
     widget.onSelectPlace(selectedLocation.latitude, selectedLocation.longitude);
   }
 
