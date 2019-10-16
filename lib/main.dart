@@ -4,6 +4,7 @@ import 'package:flutter_course/screens/add_place.dart';
 import 'package:flutter_course/screens/places_list_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'screens/place_details_scren.dart';
 import 'widgets/ApisProviderWidget.dart';
 
 void main() {
@@ -27,7 +28,10 @@ class _MyAppState extends State<MyApp> {
           theme: ThemeData(
               primarySwatch: Colors.indigo, accentColor: Colors.amber),
           home: PlacesListScreen(),
-          routes: {AddPlaceScreen.routeName: (ctx) => AddPlaceScreen()},
+          routes: {
+            AddPlaceScreen.routeName: (ctx) => AddPlaceScreen(),
+            PlaceDetailScreen.routeName: (ctx) => PlaceDetailScreen()
+          },
         ),
       ),
     );
