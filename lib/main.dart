@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,14 +23,36 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  int _batteryLevel;
+
+  Future<String> _getBatteryLevel() async {
+    const platform = MethodChannel('course.flutter.dev/battery');
+    try {
+      final batteryLevel = await platform.invokeMethod<int>('getBatteryLevel');
+      setState(() {
+        _batteryLevel = batteryLevel;
+      });
+    } on PlatformException catch (error) {
+      setState(() {
+        _batteryLevel = null;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getBatteryLevel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Native Code'),
       ),
-      body: const Center(
-        child: Text('Battery Level: ...'),
+      body: Center(
+        child: Text('Battery Level: $_batteryLevel'),
       ),
     );
   }
