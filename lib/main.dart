@@ -41,8 +41,9 @@ class Home extends StatelessWidget {
             activeAreas: [
               RelativePanArea(
                 area: const Rect.fromLTWH(0, 0.7, 1.0, 0.3),
-//              debugArea: true,
-              )
+//              debugArea: true, // Debug size of area
+              ),
+//              ActiveArea(area: Rect.fromLTWH(0, 0, 0, 0), onAreaTapped: () {}) // Handle button/area clicked
             ],
           ),
         ),
