@@ -176,6 +176,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.9"
+  flare_dart:
+    dependency: transitive
+    description:
+      name: flare_dart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.2"
+  flare_flutter:
+    dependency: "direct dev"
+    description:
+      name: flare_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.6.2"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -394,6 +408,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  smart_flare:
+    dependency: "direct dev"
+    description:
+      name: smart_flare
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.8"
   source_maps:
     dependency: transitive
     description:
@@ -501,3 +522,4 @@ packages:
     version: "2.2.0"
 sdks:
   dart: ">=2.5.0 <3.0.0"
+  flutter: ">=1.7.8+hotfix.3"
