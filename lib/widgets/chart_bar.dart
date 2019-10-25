@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -29,11 +31,13 @@ class ChartBar extends StatelessWidget {
                   Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey, width: 1.0),
-                        color: const Color.fromRGBO(220, 220, 220, 1),
+                        color: Colors.purple,
                         borderRadius: BorderRadius.circular(10)),
                   ),
                   FractionallySizedBox(
-                    heightFactor: spendingPercentageOfTotal,
+                    heightFactor: spendingPercentageOfTotal == 0.0
+                        ? 0.0
+                        : max(spendingPercentageOfTotal, 0.12),
                     child: Container(
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,

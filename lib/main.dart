@@ -55,16 +55,21 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
     Transaction(
         id: 't1',
-        title: 'New shiny shoes',
-        amount: 69.99,
-        date: DateTime.now().subtract(const Duration(days: 2))),
+        title: 'Toys',
+        amount: 112.99,
+        date: DateTime.now().subtract(const Duration(days: 6))),
     Transaction(
         id: 't2',
-        title: 'Weekly groceries',
-        amount: 16.53,
-        date: DateTime.now().subtract(const Duration(days: 1))),
+        title: 'New shiny shoes',
+        amount: 59.99,
+        date: DateTime.now().subtract(const Duration(days: 4))),
     Transaction(
-        id: 't3', title: 'Loooong', amount: 123.99, date: DateTime.now()),
+        id: 't3',
+        title: 'Weekly groceries',
+        amount: 160.53,
+        date: DateTime.now().subtract(const Duration(days: 2))),
+    Transaction(
+        id: 't4', title: 'Lamp', amount: 71.99, date: DateTime.now()),
   ];
 
   void _addNewTransaction(String title, double amount, DateTime date) {
